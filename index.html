@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaktlaget - Investor Pitch</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        .slider::-moz-range-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
+
+        // Image carousel component with swipe animations
+        function ImageCarousel() {
+            const images = [
+                "public/IMG_8880.jpg",
+                "public/IMG_8881.jpg", 
+                "public/IMG_8882.jpg",
+                "public/IMG_8884.jpg",
+                "public/IMG_8885.jpg"
+            ];
+            
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [isTransitioning, setIsTransitioning] = useState(false);
+            
+            // Auto-advance every 4 seconds
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setCurrentIndex((prev) => (prev + 1) % images.length);
+                }, 4000);
+                return () => clearInterval(interval);
+            }, [images.length]);
+            
+            const nextImage = () => {
+                if (isTransitioning) return;
+                setIsTransitioning(true);
+                setCurrentIndex((prev) => (prev + 1) % images.length);
+                setTimeout(() => setIsTransitioning(false), 500);
+            };
+            
+            const prevImage = () => {
+                if (isTransitioning) return;
+                setIsTransitioning(true);
+                setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+                setTimeout(() => setIsTransitioning(false), 500);
+            };
+            
+            return (
+                <div className="relative h-full w-full overflow-hidden">
+                    {/* Main image with transition */}
+                    <div className="relative h-full w-full">
+                        {images.map((src, index) => (
+                            <img
+                                key={src}
+                                src={src}
+                                alt={`Jaktlaget App Screenshot ${index + 1}`}
+                                className={`absolute inset-0 h-full w-full object-cover object-top transition-all duration-500 ease-in-out ${
+                                    index === currentIndex 
+                                        ? 'opacity-100 scale-100' 
+                                        : index === (currentIndex - 1 + images.length) % images.length
+                                        ? 'opacity-0 scale-95 -translate-x-full'
+                                        : 'opacity-0 scale-95 translate-x-full'
+                                }`}
+                            />
+                        ))}
+                    </div>
+                    
+                    {/* Navigation dots */}
+                    <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                        {images.map((_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => {
+                                    if (!isTransitioning) {
+                                        setIsTransitioning(true);
+                                        setCurrentIndex(index);
+                                        setTimeout(() => setIsTransitioning(false), 500);
+                                    }
+                                }}
+                                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                    index === currentIndex 
+                                        ? 'bg-emerald-400 scale-125' 
+                                        : 'bg-white/40 hover:bg-white/60'
+                                }`}
+                            />
+                        ))}
+                    </div>
+                    
+                    {/* Swipe indicators */}
+                    <div className="absolute left-2 top-1/2 transform -translate-y-1/2 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                        <button
+                            onClick={prevImage}
+                            className="w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                        <button
+                            onClick={nextImage}
+                            className="w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Simple version without complex dependencies
+        function JaktlagetInvestorPitch() {
+            const [region, setRegion] = useState("NORDEN");
+            const [adoption, setAdoption] = useState(10);
+            const [price, setPrice] = useState(19);
+
+            const HUNTING_CARDS = {
+                SE: { name: "SVERIGE", year: "2023/24", count: 277042 },
+                NO: { name: "NORGE", year: "2024/25", count: 171740 },
+                DK: { name: "DANMARK", year: "2024/25", count: 166891 },
+                FI: { name: "FINLAND", year: "2024", count: 301963 },
+            };
+
+            const NORDIC_TOTAL = Object.values(HUNTING_CARDS).reduce((acc, v) => acc + v.count, 0);
+
+            const baseCount = useMemo(() => {
+                if (region === "NORDEN") return NORDIC_TOTAL;
+                return HUNTING_CARDS[region].count;
+            }, [region]);
+
+            const subscribers = useMemo(() => Math.round(baseCount * (adoption / 100)), [baseCount, adoption]);
+            const annualRevenueSEK = useMemo(() => subscribers * price * 12, [subscribers, price]);
+
+            const currency = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", maximumFractionDigits: 0 });
+            const fmt = new Intl.NumberFormat("sv-SE");
+
+            return (
+                <div className="min-h-screen w-full bg-gradient-to-br from-[#0a0f0a] via-[#0b100c] to-[#0a0f0a] text-white overflow-x-hidden">
+                    {/* Header */}
+                    <header className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-xl bg-black/30">
+                        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+                            <div className="flex items-center gap-3">
+                                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400/20 to-emerald-500/20 ring-1 ring-emerald-300/30 shadow-lg shadow-emerald-500/20">
+                                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+                                        <path d="M16 20c-2 4-6 6-10 6m10-6c-3-3-5-7-5-12m5 12c3-3 9-4 14-2m-14 2c4 4 6 10 6 16m32-16c2 4 6 6 10 6m-10-6c3-3 5-7 5-12m-5 12c-3-3-9-4-14-2m14 2c-4 4-6 10-6 16" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round"/>
+                                        <circle cx="32" cy="46" r="3" stroke="#10b981" strokeWidth="2.5" />
+                                    </svg>
+                                </span>
+                                <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent">Jaktlaget</span>
+                                <span className="ml-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300 font-medium">Investor Pitch</span>
+                            </div>
+                            <div className="text-xs text-white/60 font-medium">
+                                Konfidentiellt – delning efter överenskommelse
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="relative z-10">
+                        {/* Title Section */}
+                        <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
+                            <div className="grid items-center gap-12 md:grid-cols-2">
+                                <div>
+                                    <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
+                                        <span className="bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
+                                            Infrastruktur för jaktlag.
+                                        </span>
+                                        <span className="block text-white/70 text-3xl md:text-4xl font-medium mt-4">
+                                            Säkrare säsonger, mindre friktion, bättre kommunikation.
+                                        </span>
+                                    </h1>
+                                    <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 md:text-xl">
+                                        Jaktlaget samlar kalender, pass, bomkoder, kartor och kommunikation i ett rollstyrt, GDPR‑medvetet flöde. Designat för förtroende och fältläsbarhet.
+                                    </p>
+                                </div>
+                                <div className="relative">
+                                    <div className="absolute -inset-x-8 -bottom-8 top-16 -z-10 rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl ring-1 ring-white/20 shadow-[0_20px_80px_rgba(0,0,0,0.4)]" />
+                                    <div className="relative mx-auto aspect-[9/19] w-full max-w-[320px] rounded-[2.8rem] bg-gradient-to-br from-white/10 to-white/5 ring-1 ring-white/20 shadow-2xl shadow-black/30 backdrop-blur-xl overflow-hidden">
+                                        <div className="absolute inset-0 rounded-[2.8rem] border border-white/15" />
+                                        <div className="absolute left-1/2 top-0 h-7 w-40 -translate-x-1/2 rounded-b-2xl bg-black/70 backdrop-blur-sm" />
+                                        <div className="absolute inset-[12px] rounded-[2.2rem] bg-gradient-to-br from-black/80 to-black/60 ring-1 ring-white/15 overflow-hidden">
+                                            <ImageCarousel />
+                                        </div>
+                                    </div>
+                                    <p className="mt-4 text-center text-xs text-white/60 font-medium">Placera en produkt‑screenshot här (ej marknadsföringsmaterial).</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Interactive Calculator */}
+                        <section className="mx-auto mt-16 max-w-7xl px-6">
+                            <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20">
+                                <div className="flex flex-wrap items-end justify-between gap-4">
+                                    <div>
+                                        <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent">
+                                            Interaktiv Nordisk Kalkylator
+                                        </h3>
+                                        <p className="mt-2 text-sm text-white/80">Välj område, adoption och pris för att modellera potentiella intäkter.</p>
+                                    </div>
+                                </div>
+
+                                <div className="mt-8 grid gap-6 md:grid-cols-3">
+                                    <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+                                        <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Område</div>
+                                        <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
+                                            {[
+                                                { id: "NORDEN", label: "HELA NORDEN" },
+                                                { id: "SE", label: "SVERIGE" },
+                                                { id: "NO", label: "NORGE" },
+                                                { id: "DK", label: "DANMARK" },
+                                                { id: "FI", label: "FINLAND" },
+                                            ].map((opt) => (
+                                                <button 
+                                                    key={opt.id} 
+                                                    onClick={() => setRegion(opt.id)} 
+                                                    className={`rounded-xl px-4 py-2.5 ring-1 ring-white/15 transition-all duration-200 text-sm font-medium text-left ${
+                                                        region === opt.id
+                                                            ? "bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 shadow-lg shadow-emerald-500/25" 
+                                                            : "hover:bg-white/10 hover:ring-white/25"
+                                                    }`}
+                                                >
+                                                    {opt.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="mt-4 text-xs text-white/70 bg-black/30 p-3 rounded-lg border border-white/10">
+                                            {region === "NORDEN" ? (
+                                                <>
+                                                    <div className="font-semibold text-emerald-300">Aktiva jaktkort (summa): {fmt.format(NORDIC_TOTAL)}</div>
+                                                    <div className="mt-2 space-y-1 opacity-80">
+                                                        <div>SE {HUNTING_CARDS.SE.year}: {fmt.format(HUNTING_CARDS.SE.count)}</div>
+                                                        <div>NO {HUNTING_CARDS.NO.year}: {fmt.format(HUNTING_CARDS.NO.count)}</div>
+                                                        <div>DK {HUNTING_CARDS.DK.year}: {fmt.format(HUNTING_CARDS.DK.count)}</div>
+                                                        <div>FI {HUNTING_CARDS.FI.year}: {fmt.format(HUNTING_CARDS.FI.count)}</div>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div>
+                                                    Aktiva jaktkort: <span className="font-semibold text-emerald-300">{fmt.format(HUNTING_CARDS[region].count)}</span> <span className="opacity-70">({HUNTING_CARDS[region].year})</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+                                        <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Adoption & Pris</div>
+                                        <div className="mt-3 space-y-6">
+                                            <div className="space-y-2">
+                                                <div className="flex items-center justify-between text-sm">
+                                                    <span>Adoption (% av aktiva jaktkort)</span>
+                                                    <span className="font-semibold text-emerald-400">{adoption}%</span>
+                                                </div>
+                                                <input 
+                                                    type="range" 
+                                                    min={1} 
+                                                    max={80} 
+                                                    step={1} 
+                                                    value={adoption} 
+                                                    onChange={(e) => setAdoption(parseInt(e.target.value))} 
+                                                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
+                                                />
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-3">
+                                                {[19, 49].map((p) => (
+                                                    <button 
+                                                        key={p} 
+                                                        onClick={() => setPrice(p)} 
+                                                        className={`rounded-xl px-4 py-2.5 ring-1 ring-white/15 transition-all duration-200 text-sm font-medium ${
+                                                            price === p
+                                                                ? "bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 shadow-lg shadow-emerald-500/25" 
+                                                                : "hover:bg-white/10 hover:ring-white/25"
+                                                        }`}
+                                                    >
+                                                        {p} kr / mån
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+                                        <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Resultat</div>
+                                        <div className="mt-3 space-y-4">
+                                            <div className="flex items-center justify-between text-sm">
+                                                <span>Prenumeranter</span>
+                                                <span className="font-bold text-emerald-400">{fmt.format(subscribers)}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between text-sm">
+                                                <span>Intäkt / månad</span>
+                                                <span className="font-bold text-emerald-400">{currency.format(subscribers * price)}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between text-sm">
+                                                <span>Intäkt / år</span>
+                                                <span className="font-bold text-emerald-400">{currency.format(annualRevenueSEK)}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Revenue Table */}
+                        <section className="mx-auto mt-16 max-w-7xl px-6">
+                            <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20">
+                                <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-8">
+                                    Potentiella intäkter (estimat)
+                                </h3>
+                                
+                                <div className="overflow-x-auto">
+                                    <table className="w-full min-w-[720px] border-separate border-spacing-y-3">
+                                        <thead>
+                                            <tr className="text-left text-sm text-white/80">
+                                                <th className="rounded-l-xl bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Adoption</th>
+                                                <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Användare</th>
+                                                <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsintäkt (19 kr)</th>
+                                                <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsintäkt (29 kr)</th>
+                                                <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsintäkt (49 kr)</th>
+                                                <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Drift/år (estimat)</th>
+                                                <th className="rounded-r-xl bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsvinst (19 / 29 / 49)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {[
+                                                { adoption: "1 %", users: "8 957", rev19: "2,04 Mkr", rev29: "3,12 Mkr", rev49: "5,27 Mkr", opex: "~0,24 Mkr", profit: "1,8 M / 2,9 M / 5,0 M" },
+                                                { adoption: "10 %", users: "89 571", rev19: "20,4 Mkr", rev29: "31,2 Mkr", rev49: "52,7 Mkr", opex: "~0,6 Mkr", profit: "19,8 M / 30,6 M / 52,1 M" },
+                                                { adoption: "20 %", users: "179 141", rev19: "40,8 Mkr", rev29: "62,4 Mkr", rev49: "105,4 Mkr", opex: "~1,0 Mkr", profit: "39,8 M / 61,4 M / 104,4 M" },
+                                                { adoption: "40 %", users: "358 282", rev19: "81,7 Mkr", rev29: "124,8 Mkr", rev49: "210,8 Mkr", opex: "~1,4 Mkr", profit: "80,3 M / 123,4 M / 209,4 M" },
+                                            ].map((r, idx) => (
+                                                <tr key={idx} className="text-sm">
+                                                    <td className="rounded-l-xl bg-black/40 px-4 py-4 ring-1 ring-white/10 font-medium">{r.adoption}</td>
+                                                    <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.users}</td>
+                                                    <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.rev19}</td>
+                                                    <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.rev29}</td>
+                                                    <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.rev49}</td>
+                                                    <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.opex}</td>
+                                                    <td className="rounded-r-xl bg-black/40 px-4 py-4 ring-1 ring-white/10 font-semibold text-emerald-300">{r.profit}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Footer */}
+                        <footer className="mx-auto max-w-7xl px-6 pb-16 mt-16">
+                            <div className="border-t border-white/10 pt-8 text-center">
+                                <p className="text-sm text-white/60 font-medium">
+                                    © {new Date().getFullYear()} Jaktlaget. Konfidentiellt underlag för investerare.
+                                </p>
+                            </div>
+                        </footer>
+                    </main>
+                </div>
+            );
+        }
+
+        // Render the app
+        ReactDOM.render(<JaktlagetInvestorPitch />, document.getElementById('root'));
+    </script>
+</body>
+</html>
