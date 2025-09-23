@@ -137,8 +137,234 @@
             );
         }
 
+        // Advertiser Calculator Component
+        function AdvertiserCalculator() {
+            const [region, setRegion] = useState("NORDEN");
+            const [adoption, setAdoption] = useState(10);
+            const [price, setPrice] = useState(19);
+            const [mauPct, setMauPct] = useState(60);
+            const [viewsPerMAU, setViewsPerMAU] = useState(30);
+            const [sovPct, setSovPct] = useState(20);
+
+            const HUNTING_CARDS = {
+                SE: { name: "SVERIGE", year: "2023/24", count: 277042 },
+                NO: { name: "NORGE", year: "2024/25", count: 171740 },
+                DK: { name: "DANMARK", year: "2024/25", count: 166891 },
+                FI: { name: "FINLAND", year: "2024", count: 301963 },
+            };
+
+            const NORDIC_TOTAL = Object.values(HUNTING_CARDS).reduce((acc, v) => acc + v.count, 0);
+
+            const baseCount = useMemo(() => {
+                if (region === "NORDEN") return NORDIC_TOTAL;
+                return HUNTING_CARDS[region].count;
+            }, [region]);
+
+            const subscribers = useMemo(() => Math.round(baseCount * (adoption / 100)), [baseCount, adoption]);
+            const mauUsers = useMemo(() => Math.round(subscribers * (mauPct / 100)), [subscribers, mauPct]);
+            const adProbPerView = useMemo(() => (1 / 3) * (sovPct / 100), [sovPct]);
+            const monthlyImpressions = useMemo(() => Math.round(mauUsers * viewsPerMAU * adProbPerView), [mauUsers, viewsPerMAU, adProbPerView]);
+            const uniqueReach = useMemo(() => {
+                const p = adProbPerView;
+                const V = viewsPerMAU;
+                const probAtLeastOne = 1 - Math.pow(1 - p, V);
+                return Math.round(mauUsers * probAtLeastOne);
+            }, [mauUsers, adProbPerView, viewsPerMAU]);
+
+            const currency = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", maximumFractionDigits: 0 });
+            const fmt = new Intl.NumberFormat("sv-SE");
+
+            return (
+                <div className="space-y-8">
+                    {/* Pain Points Section */}
+                    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20">
+                        <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
+                            Annonsörernas Pain Points
+                        </h3>
+                        <div className="grid gap-6 md:grid-cols-2">
+                            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+                                <h4 className="text-lg font-semibold text-red-300 mb-4">Problem idag</h4>
+                                <ul className="space-y-3 text-sm text-white/80">
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-red-400 mt-1">•</span>
+                                        <span>Svårt att nå jägare - fragmenterad målgrupp över olika plattformar</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-red-400 mt-1">•</span>
+                                        <span>Hög kostnad per kontakt - ineffektiv annonsering</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-red-400 mt-1">•</span>
+                                        <span>Brist på kontextuell relevans - generiska annonser</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-red-400 mt-1">•</span>
+                                        <span>Svårt att mäta ROI på jaktrelaterad marknadsföring</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+                                <h4 className="text-lg font-semibold text-emerald-300 mb-4">Vår lösning</h4>
+                                <ul className="space-y-3 text-sm text-white/80">
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-emerald-400 mt-1">•</span>
+                                        <span>Koncentrerad målgrupp - alla jägare på en plattform</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-emerald-400 mt-1">•</span>
+                                        <span>Låg kostnad per kontakt - direkt till engagerade användare</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-emerald-400 mt-1">•</span>
+                                        <span>Kontextuell relevans - annonser i jaktkontext</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-emerald-400 mt-1">•</span>
+                                        <span>Tydlig ROI-mätning - spårbara konverteringar</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Interactive Advertiser Calculator */}
+                    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20">
+                        <div className="flex flex-wrap items-end justify-between gap-4">
+                            <div>
+                                <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent">
+                                    Annonsreach Kalkylator
+                                </h3>
+                                <p className="mt-2 text-sm text-white/80">Modellera potentiell annonsreach baserat på användaradoption och engagemang.</p>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 grid gap-6 md:grid-cols-3">
+                            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+                                <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Marknad & Adoption</div>
+                                <div className="mt-3 space-y-6">
+                                    <div className="grid grid-cols-2 gap-3 text-sm">
+                                        {[
+                                            { id: "NORDEN", label: "HELA NORDEN" },
+                                            { id: "SE", label: "SVERIGE" },
+                                            { id: "NO", label: "NORGE" },
+                                            { id: "DK", label: "DANMARK" },
+                                            { id: "FI", label: "FINLAND" },
+                                        ].map((opt) => (
+                                            <button 
+                                                key={opt.id} 
+                                                onClick={() => setRegion(opt.id)} 
+                                                className={`rounded-xl px-4 py-2.5 ring-1 ring-white/15 transition-all duration-200 text-sm font-medium text-left ${
+                                                    region === opt.id
+                                                        ? "bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 shadow-lg shadow-emerald-500/25" 
+                                                        : "hover:bg-white/10 hover:ring-white/25"
+                                                }`}
+                                            >
+                                                {opt.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between text-sm">
+                                            <span>Adoption (% av aktiva jaktkort)</span>
+                                            <span className="font-semibold text-emerald-400">{adoption}%</span>
+                                        </div>
+                                        <input 
+                                            type="range" 
+                                            min={1} 
+                                            max={80} 
+                                            step={1} 
+                                            value={adoption} 
+                                            onChange={(e) => setAdoption(parseInt(e.target.value))} 
+                                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+                                <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Engagemang & Annonser</div>
+                                <div className="mt-3 space-y-6">
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between text-sm">
+                                            <span>MAU av prenumeranter</span>
+                                            <span className="font-semibold text-emerald-400">{mauPct}%</span>
+                                        </div>
+                                        <input 
+                                            type="range" 
+                                            min={10} 
+                                            max={95} 
+                                            step={5} 
+                                            value={mauPct} 
+                                            onChange={(e) => setMauPct(parseInt(e.target.value))} 
+                                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between text-sm">
+                                            <span>Feed-visningar / MAU / mån</span>
+                                            <span className="font-semibold text-emerald-400">{viewsPerMAU}</span>
+                                        </div>
+                                        <input 
+                                            type="range" 
+                                            min={5} 
+                                            max={120} 
+                                            step={5} 
+                                            value={viewsPerMAU} 
+                                            onChange={(e) => setViewsPerMAU(parseInt(e.target.value))} 
+                                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between text-sm">
+                                            <span>Partnerns SOV av annonsutrymme</span>
+                                            <span className="font-semibold text-emerald-400">{sovPct}%</span>
+                                        </div>
+                                        <input 
+                                            type="range" 
+                                            min={5} 
+                                            max={100} 
+                                            step={5} 
+                                            value={sovPct} 
+                                            onChange={(e) => setSovPct(parseInt(e.target.value))} 
+                                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+                                <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Annonsresultat</div>
+                                <div className="mt-3 space-y-4">
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>Prenumeranter</span>
+                                        <span className="font-bold text-emerald-400">{fmt.format(subscribers)}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>MAU (antal)</span>
+                                        <span className="font-bold text-emerald-400">{fmt.format(mauUsers)}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>Månatliga visningar (est.)</span>
+                                        <span className="font-bold text-emerald-400">{fmt.format(monthlyImpressions)}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>Unik reach / månad (est.)</span>
+                                        <span className="font-bold text-emerald-400">{fmt.format(uniqueReach)}</span>
+                                    </div>
+                                </div>
+                                <div className="mt-6 text-xs text-white/70 bg-white/5 p-3 rounded-lg border border-white/10">
+                                    Antagande: 1 annons per 3 inlägg i anslagstavlan.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         // Simple version without complex dependencies
         function JaktlagetInvestorPitch() {
+            const [activeTab, setActiveTab] = useState("investor");
             const [region, setRegion] = useState("NORDEN");
             const [adoption, setAdoption] = useState(10);
             const [price, setPrice] = useState(19);
@@ -178,15 +404,38 @@
                                 <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent">Jaktlaget</span>
                                 <span className="ml-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300 font-medium">Investor Pitch</span>
                             </div>
-                            <div className="text-xs text-white/60 font-medium">
-                                Konfidentiellt – delning efter överenskommelse
+                            
+                            {/* Tab Navigation */}
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => setActiveTab("investor")}
+                                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                                        activeTab === "investor"
+                                            ? "bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 shadow-lg shadow-emerald-500/25"
+                                            : "text-white/70 hover:text-white hover:bg-white/10"
+                                    }`}
+                                >
+                                    Investerare
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab("advertiser")}
+                                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                                        activeTab === "advertiser"
+                                            ? "bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 shadow-lg shadow-emerald-500/25"
+                                            : "text-white/70 hover:text-white hover:bg-white/10"
+                                    }`}
+                                >
+                                    Annonsörer
+                                </button>
                             </div>
                         </div>
                     </header>
 
                     <main className="relative z-10">
-                        {/* Title Section */}
-                        <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
+                        {activeTab === "investor" ? (
+                            <>
+                                {/* Title Section */}
+                                <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
                             <div className="grid items-center gap-12 md:grid-cols-2">
                                 <div>
                                     <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
@@ -370,14 +619,46 @@
                             </div>
                         </section>
 
-                        {/* Footer */}
-                        <footer className="mx-auto max-w-7xl px-6 pb-16 mt-16">
-                            <div className="border-t border-white/10 pt-8 text-center">
-                                <p className="text-sm text-white/60 font-medium">
-                                    © {new Date().getFullYear()} Jaktlaget. Konfidentiellt underlag för investerare.
-                                </p>
-                            </div>
-                        </footer>
+                                {/* Footer */}
+                                <footer className="mx-auto max-w-7xl px-6 pb-16 mt-16">
+                                    <div className="border-t border-white/10 pt-8 text-center">
+                                        <p className="text-sm text-white/60 font-medium">
+                                            © {new Date().getFullYear()} Jaktlaget. Konfidentiellt underlag för investerare.
+                                        </p>
+                                    </div>
+                                </footer>
+                            </>
+                        ) : (
+                            <>
+                                {/* Advertiser Tab Content */}
+                                <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
+                                    <div className="text-center mb-12">
+                                        <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
+                                            <span className="bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
+                                                Annonsera till jägare.
+                                            </span>
+                                            <span className="block text-white/70 text-3xl md:text-4xl font-medium mt-4">
+                                                Nå din målgrupp där de är mest engagerade.
+                                            </span>
+                                        </h1>
+                                        <p className="mt-6 max-w-2xl mx-auto text-lg leading-relaxed text-white/80 md:text-xl">
+                                            Jaktlaget samlar nordens jägare på en plattform. Perfekt för företag som vill nå en engagerad, kontextuell målgrupp med hög köpkraft.
+                                        </p>
+                                    </div>
+                                    
+                                    <AdvertiserCalculator />
+                                </section>
+
+                                {/* Footer */}
+                                <footer className="mx-auto max-w-7xl px-6 pb-16 mt-16">
+                                    <div className="border-t border-white/10 pt-8 text-center">
+                                        <p className="text-sm text-white/60 font-medium">
+                                            © {new Date().getFullYear()} Jaktlaget. Annonsplattform för jaktrelaterade företag.
+                                        </p>
+                                    </div>
+                                </footer>
+                            </>
+                        )}
                     </main>
                 </div>
             );

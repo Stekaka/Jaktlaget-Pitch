@@ -233,7 +233,8 @@ export default function JaktlagetInvestorPitchEnhanced() {
                 </span>
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 md:text-xl">
-                Jaktlaget samlar kalender, pass, bomkoder, kartor och kommunikation i ett rollstyrt, GDPR‑medvetet flöde. Designat för förtroende och fältläsbarhet.
+                Jaktlaget - hela NORDENS jaktcommunity! Här samlas kalender, pass, bomkoder och kommunikation i ett rollstyrt, GDPR‑medvetet flöde. Designat för förtroende och fältläsbarhet.
+                Hitta gästjägare, knyt nya kontakter och utbyt värdefull kunskap mellan andra jägare, allt på ett och samma ställe! 
               </p>
               <div className="mt-8 grid max-w-xl grid-cols-1 gap-4 text-sm text-white/80 md:grid-cols-2">
                 <Card title="Affärsmodell" hover>
@@ -255,7 +256,7 @@ export default function JaktlagetInvestorPitchEnhanced() {
             >
               <div className="absolute -inset-x-8 -bottom-8 top-16 -z-10 rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl ring-1 ring-white/20 shadow-[0_20px_80px_rgba(0,0,0,0.4)]" />
               <IPhoneFrame />
-              <p className="mt-4 text-center text-xs text-white/60 font-medium">Placera en produkt‑screenshot här (ej marknadsföringsmaterial).</p>
+              <p className="mt-4 text-center text-xs text-white/60 font-medium">Innehållet är i utvecklingsfas (kan ändas).</p>
             </motion.div>
           </div>
         </section>
@@ -283,7 +284,7 @@ export default function JaktlagetInvestorPitchEnhanced() {
               <ul className="space-y-3 text-sm text-white/80">
                 <li className="flex items-start gap-3">
                   <span className="text-emerald-400 mt-1">•</span>
-                  <span>Samlad plattform: kalender, pass, bomkoder, karta, anslag/chatt.</span>
+                  <span>Samlad plattform: kalender, pass, bomkoder, anslag/chatt.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-emerald-400 mt-1">•</span>
