@@ -141,7 +141,7 @@
         function AdvertiserCalculator() {
             const [region, setRegion] = useState("NORDEN");
             const [adoption, setAdoption] = useState(10);
-            const [price, setPrice] = useState(19);
+            const [price, setPrice] = useState(16);
             const [mauPct, setMauPct] = useState(60);
             const [viewsPerMAU, setViewsPerMAU] = useState(30);
             const [sovPct, setSovPct] = useState(20);
@@ -367,7 +367,7 @@
             const [activeTab, setActiveTab] = useState("investor");
             const [region, setRegion] = useState("NORDEN");
             const [adoption, setAdoption] = useState(10);
-            const [price, setPrice] = useState(19);
+            const [price, setPrice] = useState(16);
 
             const HUNTING_CARDS = {
                 SE: { name: "SVERIGE", year: "2023/24", count: 277042 },
@@ -538,7 +538,7 @@
                                                 />
                                             </div>
                                             <div className="grid grid-cols-2 gap-3">
-                                                {[19, 49].map((p) => (
+                                                {[16, 24].map((p) => (
                                                     <button 
                                                         key={p} 
                                                         onClick={() => setPrice(p)} 
@@ -589,26 +589,26 @@
                                             <tr className="text-left text-sm text-white/80">
                                                 <th className="rounded-l-xl bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Adoption</th>
                                                 <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Användare</th>
-                                                <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsintäkt (19 kr)</th>
+                                                <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsintäkt (16 kr)</th>
                                                 <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsintäkt (29 kr)</th>
-                                                <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsintäkt (49 kr)</th>
+                                                <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsintäkt (24 kr)</th>
                                                 <th className="bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Drift/år (estimat)</th>
-                                                <th className="rounded-r-xl bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsvinst (19 / 29 / 49)</th>
+                                                <th className="rounded-r-xl bg-white/10 px-4 py-4 ring-1 ring-white/20 font-semibold">Årsvinst (16 / 29 / 24)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {[
-                                                { adoption: "1 %", users: "8 957", rev19: "2,04 Mkr", rev29: "3,12 Mkr", rev49: "5,27 Mkr", opex: "~0,24 Mkr", profit: "1,8 M / 2,9 M / 5,0 M" },
-                                                { adoption: "10 %", users: "89 571", rev19: "20,4 Mkr", rev29: "31,2 Mkr", rev49: "52,7 Mkr", opex: "~0,6 Mkr", profit: "19,8 M / 30,6 M / 52,1 M" },
-                                                { adoption: "20 %", users: "179 141", rev19: "40,8 Mkr", rev29: "62,4 Mkr", rev49: "105,4 Mkr", opex: "~1,0 Mkr", profit: "39,8 M / 61,4 M / 104,4 M" },
-                                                { adoption: "40 %", users: "358 282", rev19: "81,7 Mkr", rev29: "124,8 Mkr", rev49: "210,8 Mkr", opex: "~1,4 Mkr", profit: "80,3 M / 123,4 M / 209,4 M" },
+                                                { adoption: "1 %", users: "8 957", rev16: "1,72 Mkr", rev29: "3,12 Mkr", rev24: "2,57 Mkr", opex: "~0,24 Mkr", profit: "1,5 M / 2,9 M / 2,3 M" },
+                                                { adoption: "10 %", users: "89 571", rev16: "17,2 Mkr", rev29: "31,2 Mkr", rev24: "25,7 Mkr", opex: "~0,6 Mkr", profit: "16,6 M / 30,6 M / 25,1 M" },
+                                                { adoption: "20 %", users: "179 141", rev16: "34,4 Mkr", rev29: "62,4 Mkr", rev24: "51,4 Mkr", opex: "~1,0 Mkr", profit: "33,4 M / 61,4 M / 50,4 M" },
+                                                { adoption: "40 %", users: "358 282", rev16: "68,8 Mkr", rev29: "124,8 Mkr", rev24: "102,8 Mkr", opex: "~1,4 Mkr", profit: "67,4 M / 123,4 M / 101,4 M" },
                                             ].map((r, idx) => (
                                                 <tr key={idx} className="text-sm">
                                                     <td className="rounded-l-xl bg-black/40 px-4 py-4 ring-1 ring-white/10 font-medium">{r.adoption}</td>
                                                     <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.users}</td>
-                                                    <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.rev19}</td>
+                                                    <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.rev16}</td>
                                                     <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.rev29}</td>
-                                                    <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.rev49}</td>
+                                                    <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.rev24}</td>
                                                     <td className="bg-black/40 px-4 py-4 ring-1 ring-white/10">{r.opex}</td>
                                                     <td className="rounded-r-xl bg-black/40 px-4 py-4 ring-1 ring-white/10 font-semibold text-emerald-300">{r.profit}</td>
                                                 </tr>
