@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
@@ -143,10 +143,17 @@ const currency = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "
 const fmt = new Intl.NumberFormat("sv-SE");
 
 export default function JaktlagetInvestorPitchEnhanced() {
+  // --- UI state for tabs ---
+  const [activeTab, setActiveTab] = useState<"investerare" | "annonsorer" | "utvecklare">("investerare");
+
   // --- UI state for calculator ---
   const [region, setRegion] = useState<"NORDEN" | "SE" | "NO" | "DK" | "FI">("NORDEN");
   const [adoption, setAdoption] = useState(10);
   const [price, setPrice] = useState<19 | 49>(19);
+  const [useCustomScenario, setUseCustomScenario] = useState(false);
+  const [customPrice, setCustomPrice] = useState(29);
+  const [scenarioMonth, setScenarioMonth] = useState(new Date().getMonth() + 1);
+  const [scenarioYear, setScenarioYear] = useState(new Date().getFullYear());
 
   // Bonus / ads
   const [mauPct, setMauPct] = useState(60);
@@ -159,9 +166,10 @@ export default function JaktlagetInvestorPitchEnhanced() {
     return HUNTING_CARDS[region].count;
   }, [region]);
 
+  const activePrice = useMemo(() => useCustomScenario ? customPrice : price, [useCustomScenario, customPrice, price]);
   const subscribers = useMemo(() => Math.round(baseCount * (adoption / 100)), [baseCount, adoption]);
-  const annualRevenueSEK = useMemo(() => subscribers * price * 12, [subscribers, price]);
-  const monthlyRevenueSEK = useMemo(() => subscribers * price, [subscribers, price]);
+  const annualRevenueSEK = useMemo(() => subscribers * activePrice * 12, [subscribers, activePrice]);
+  const monthlyRevenueSEK = useMemo(() => subscribers * activePrice, [subscribers, activePrice]);
 
   // Ads math
   const mauUsers = useMemo(() => Math.round(subscribers * (mauPct / 100)), [subscribers, mauPct]);
@@ -174,10 +182,19 @@ export default function JaktlagetInvestorPitchEnhanced() {
     return Math.round(mauUsers * probAtLeastOne);
   }, [mauUsers, adProbPerView, viewsPerMAU]);
 
-  const revenueCompare = useMemo(() => ([
-    { label: "19 kr", value: subscribers * 19 * 12 / 1_000_000 },
-    { label: "49 kr", value: subscribers * 49 * 12 / 1_000_000 },
-  ]), [subscribers]);
+  const revenueCompare = useMemo(() => {
+    if (useCustomScenario) {
+      return [
+        { label: "19 kr", value: subscribers * 19 * 12 / 1_000_000 },
+        { label: `${customPrice} kr`, value: subscribers * customPrice * 12 / 1_000_000 },
+        { label: "49 kr", value: subscribers * 49 * 12 / 1_000_000 },
+      ];
+    }
+    return [
+      { label: "19 kr", value: subscribers * 19 * 12 / 1_000_000 },
+      { label: "49 kr", value: subscribers * 49 * 12 / 1_000_000 },
+    ];
+  }, [subscribers, useCustomScenario, customPrice]);
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-[#0a0f0a] via-[#0b100c] to-[#0a0f0a] text-white overflow-x-hidden">
@@ -215,9 +232,40 @@ export default function JaktlagetInvestorPitchEnhanced() {
         </div>
       </header>
 
+      {/* Enhanced Tab Navigation */}
+      <nav className="relative z-10 mx-auto max-w-7xl px-6 py-8">
+        <div className="flex justify-center">
+          <div className="inline-flex rounded-2xl border border-white/10 bg-white/5 p-2 backdrop-blur-xl shadow-lg shadow-black/20">
+            {[
+              { id: "investerare", label: "Investerare", icon: "📊" },
+              { id: "annonsorer", label: "Annonsörer", icon: "📢" },
+              { id: "utvecklare", label: "Utvecklare", icon: "💻" }
+            ].map((tab) => (
+              <motion.button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`relative rounded-xl px-6 py-3 text-sm font-medium transition-all duration-200 ${
+                  activeTab === tab.id
+                    ? "bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 shadow-lg shadow-emerald-500/25"
+                    : "hover:bg-white/10 hover:text-white"
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="mr-2">{tab.icon}</span>
+                {tab.label}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      </nav>
+
       <main className="relative z-10">
-        {/* Enhanced Title Section */}
-        <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
+        {/* Investerare Tab Content */}
+        {activeTab === "investerare" && (
+          <>
+            {/* Enhanced Title Section */}
+            <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
@@ -369,25 +417,92 @@ export default function JaktlagetInvestorPitchEnhanced() {
                     max={80}
                     label="Adoption (% av aktiva jaktkort)"
                   />
-                  <div className="grid grid-cols-2 gap-3">
-                    {[19, 49].map((p) => (
-                      <Button 
-                        key={p} 
-                        onClick={() => setPrice(p as 19 | 49)} 
-                        active={price === p}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-white/70">Prismodell</span>
+                      <button
+                        onClick={() => setUseCustomScenario(!useCustomScenario)}
+                        className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                          useCustomScenario 
+                            ? "bg-emerald-400/20 text-emerald-300 ring-1 ring-emerald-400/30" 
+                            : "bg-white/5 text-white/60 hover:bg-white/10"
+                        }`}
                       >
-                        {p} kr / mån
-                      </Button>
-                    ))}
+                        {useCustomScenario ? "Eget scenario" : "Standard"}
+                      </button>
+                    </div>
+                    {useCustomScenario ? (
+                      <div className="space-y-3">
+                        <div className="space-y-2">
+                          <label className="text-xs text-white/70">Pris per månad (kr)</label>
+                          <input 
+                            type="number" 
+                            value={customPrice}
+                            onChange={(e) => setCustomPrice(Math.max(1, parseInt(e.target.value) || 1))}
+                            className="w-full px-3 py-2 bg-black/40 border border-white/20 rounded-lg text-emerald-300 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
+                            min="1"
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="space-y-2">
+                            <label className="text-xs text-white/70">Månad</label>
+                            <select
+                              value={scenarioMonth}
+                              onChange={(e) => setScenarioMonth(parseInt(e.target.value))}
+                              className="w-full px-3 py-2 bg-black/40 border border-white/20 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
+                            >
+                              {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
+                                <option key={m} value={m}>
+                                  {new Date(2024, m - 1).toLocaleDateString('sv-SE', { month: 'long' })}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-xs text-white/70">År</label>
+                            <input 
+                              type="number" 
+                              value={scenarioYear}
+                              onChange={(e) => setScenarioYear(Math.max(2024, parseInt(e.target.value) || 2024))}
+                              className="w-full px-3 py-2 bg-black/40 border border-white/20 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
+                              min="2024"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-3">
+                        {[19, 49].map((p) => (
+                          <Button 
+                            key={p} 
+                            onClick={() => setPrice(p as 19 | 49)} 
+                            active={price === p}
+                          >
+                            {p} kr / mån
+                          </Button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Card>
 
               <Card title="Resultat – prenumeration" hover>
+                {useCustomScenario && (
+                  <div className="mb-4 p-3 bg-emerald-400/10 rounded-lg border border-emerald-400/30">
+                    <div className="text-xs text-emerald-300 font-medium">
+                      Scenario: {new Date(scenarioYear, scenarioMonth - 1).toLocaleDateString('sv-SE', { month: 'long', year: 'numeric' })} @ {customPrice} kr/mån
+                    </div>
+                  </div>
+                )}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between text-sm">
                     <span>Prenumeranter</span>
                     <span className="font-bold text-emerald-400">{fmt.format(subscribers)}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span>Pris per månad</span>
+                    <span className="font-bold text-emerald-400">{activePrice} kr</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span>Intäkt / månad</span>
@@ -489,17 +604,17 @@ export default function JaktlagetInvestorPitchEnhanced() {
 
               <Card title="Snabbjämförelse (år)" hover>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span>19 kr scenario</span>
-                    <span className="font-bold text-emerald-400">{revenueCompare[0].value.toFixed(2)} Mkr</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span>49 kr scenario</span>
-                    <span className="font-bold text-emerald-400">{revenueCompare[1].value.toFixed(2)} Mkr</span>
-                  </div>
+                  {revenueCompare.map((scenario, idx) => (
+                    <div key={idx} className="flex items-center justify-between text-sm">
+                      <span>{scenario.label} scenario</span>
+                      <span className="font-bold text-emerald-400">{scenario.value.toFixed(2)} Mkr</span>
+                    </div>
+                  ))}
                 </div>
                 <p className="mt-4 text-xs text-white/70 bg-white/5 p-3 rounded-lg border border-white/10">
-                  Byt pris i panelen för att sätta huvudscenariot. Jämförelsen uppdateras dynamiskt.
+                  {useCustomScenario 
+                    ? "Eget scenario aktiverat - justera pris och tidpunkt för att beräkna olika scenarion." 
+                    : "Byt pris i panelen för att sätta huvudscenariot. Jämförelsen uppdateras dynamiskt."}
                 </p>
               </Card>
             </div>
@@ -622,20 +737,351 @@ export default function JaktlagetInvestorPitchEnhanced() {
           </div>
         </section>
 
-        {/* Enhanced Source Note */}
-        <section className="mx-auto my-16 max-w-7xl px-6">
-          <motion.div 
-            className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-sm text-white/70 leading-relaxed">
-              <span className="font-semibold text-emerald-300">Källor:</span> Underlag för aktiva jaktkort (senaste publicerade): SE 2023/24; NO 2024/25; DK 2024/25; FI 2024. Uppdatera siffror löpande vid ny statistik.
-            </p>
-          </motion.div>
-        </section>
+            {/* Enhanced Source Note */}
+            <section className="mx-auto my-16 max-w-7xl px-6">
+              <motion.div
+                className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <p className="text-sm text-white/70 leading-relaxed">
+                  <span className="font-semibold text-emerald-300">Källor:</span> Underlag för aktiva jaktkort (senaste publicerade): SE 2023/24; NO 2024/25; DK 2024/25; FI 2024. Uppdatera siffror löpande vid ny statistik.
+                </p>
+              </motion.div>
+            </section>
+          </>
+        )}
+
+        {/* Annonsörer Tab Content */}
+        {activeTab === "annonsorer" && (
+          <>
+            <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
+              <div className="text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
+                    <span className="bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
+                      Annonsmöjligheter
+                    </span>
+                  </h1>
+                  <p className="mt-6 max-w-3xl mx-auto text-lg leading-relaxed text-white/80 md:text-xl">
+                    Nå ut till Nordens jaktcommunity genom Jaktlagets plattform. Vi erbjuder målriktade annonslösningar för jaktrelaterade produkter och tjänster.
+                  </p>
+                </motion.div>
+              </div>
+            </section>
+
+            <section className="mx-auto mt-16 max-w-7xl px-6">
+              <div className="grid gap-8 md:grid-cols-2">
+                <Card title="Målgrupp" hover>
+                  <ul className="space-y-3 text-sm text-white/80">
+                    <li className="flex items-start gap-3">
+                      <span className="text-emerald-400 mt-1">•</span>
+                      <span><strong>916 000+</strong> aktiva jägare i Norden</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-emerald-400 mt-1">•</span>
+                      <span><strong>60-80%</strong> månatlig aktivitet bland användare</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-emerald-400 mt-1">•</span>
+                      <span><strong>30+</strong> visningar per användare och månad</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-emerald-400 mt-1">•</span>
+                      <span><strong>Rollbaserad</strong> målriktning inom jaktlag</span>
+                    </li>
+                  </ul>
+                </Card>
+                <Card title="Annonsformat" hover>
+                  <ul className="space-y-3 text-sm text-white/80">
+                    <li className="flex items-start gap-3">
+                      <span className="text-emerald-400 mt-1">•</span>
+                      <span><strong>Anslagstavla</strong> - Native integration i flödet</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-emerald-400 mt-1">•</span>
+                      <span><strong>Push-notiser</strong> - Riktade meddelanden</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-emerald-400 mt-1">•</span>
+                      <span><strong>Sponsrad</strong> - Markera innehåll som sponsrat</span>
+                    </li>
+                  </ul>
+                </Card>
+              </div>
+            </section>
+
+            <section className="mx-auto mt-16 max-w-7xl px-6">
+              <motion.div
+                className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
+                  Kontakt för annonsförfrågningar
+                </h3>
+                <div className="grid gap-6 md:grid-cols-3">
+                  <Card title="Intresseanmälan" hover>
+                    <p className="text-sm text-white/80 mb-4">
+                      Kontakta oss för att diskutera era annonsbehov och målgruppsstrategi.
+                    </p>
+                    <Button onClick={() => window.open('mailto:annonsering@jaktlaget.se')} className="w-full">
+                      Skicka intresseanmälan
+                    </Button>
+                  </Card>
+                  <Card title="Mediakit" hover>
+                    <p className="text-sm text-white/80 mb-4">
+                      Ladda ner vår mediakit med detaljerad målgruppsdata och format.
+                    </p>
+                    <Button onClick={() => window.open('/mediakit.pdf')} className="w-full">
+                      Ladda ner mediakit
+                    </Button>
+                  </Card>
+                  <Card title="Demo" hover>
+                    <p className="text-sm text-white/80 mb-4">
+                      Se hur annonser integreras naturligt i användarupplevelsen.
+                    </p>
+                    <Button onClick={() => setActiveTab("investerare")} className="w-full">
+                      Se app-demo
+                    </Button>
+                  </Card>
+                </div>
+              </motion.div>
+            </section>
+          </>
+        )}
+
+        {/* Utvecklare Tab Content */}
+        {activeTab === "utvecklare" && (
+          <>
+            <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
+              <div className="grid items-center gap-12 md:grid-cols-2">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
+                    <span className="bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
+                      Teknisk Arkitektur
+                    </span>
+                  </h1>
+                  <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 md:text-xl">
+                    Jaktlaget är byggt med modern teknik för skalbarhet, säkerhet och användarupplevelse. En robust plattform för jägare i hela Norden.
+                  </p>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="relative"
+                >
+                  <div className="absolute -inset-x-8 -bottom-8 top-16 -z-10 rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl ring-1 ring-white/20 shadow-[0_20px_80px_rgba(0,0,0,0.4)]" />
+                  <IPhoneFrame />
+                  <p className="mt-4 text-center text-xs text-white/60 font-medium">App-demo: Funktionell prototyp i utvecklingsfas</p>
+                </motion.div>
+              </div>
+            </section>
+
+            <section className="mx-auto mt-16 max-w-7xl px-6">
+              <div className="grid gap-8 md:grid-cols-2">
+                <Card title="Tech Stack" hover>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="font-semibold text-emerald-300 mb-2">Frontend</div>
+                      <ul className="space-y-2 text-sm text-white/80">
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          React Native (iOS/Android)
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          TypeScript för typsäkerhet
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          Framer Motion för animationer
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-emerald-300 mb-2">Backend</div>
+                      <ul className="space-y-2 text-sm text-white/80">
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          Node.js med Express
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          PostgreSQL för data
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          Redis för caching
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </Card>
+
+                <Card title="Arkitektur" hover>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="font-semibold text-emerald-300 mb-2">Mikrotjänster</div>
+                      <ul className="space-y-2 text-sm text-white/80">
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          User Management Service
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          Calendar & Events Service
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          Notification Service
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          Analytics Service
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-emerald-300 mb-2">DevOps</div>
+                      <ul className="space-y-2 text-sm text-white/80">
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          Docker containerisering
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          AWS/Google Cloud deployment
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-emerald-400">•</span>
+                          CI/CD med GitHub Actions
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </section>
+
+            <section className="mx-auto mt-16 max-w-7xl px-6">
+              <motion.div
+                className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
+                  Säkerhet & Privacy (GDPR)
+                </h3>
+                <div className="grid gap-6 md:grid-cols-2">
+                  <Card title="Dataskydd" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>End-to-end kryptering för meddelanden</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Rollbaserad åtkomstkontroll (RBAC)</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Minimal datalagring enligt GDPR</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Audit logs för alla ändringar</span>
+                      </li>
+                    </ul>
+                  </Card>
+                  <Card title="Skalbarhet" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Horisontell skalning med Kubernetes</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Real-tidsync med WebSocket</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Offline-stöd för kritiska funktioner</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>CDN för global prestanda</span>
+                      </li>
+                    </ul>
+                  </Card>
+                </div>
+              </motion.div>
+            </section>
+
+            <section className="mx-auto mt-16 max-w-7xl px-6">
+              <motion.div
+                className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
+                  Utvecklingsfilosofi
+                </h3>
+                <div className="grid gap-6 md:grid-cols-3">
+                  <Card title="User-Centric" hover>
+                    <p className="text-sm text-white/80 mb-3">
+                      Design för jägare, inte för tekniker. Varje funktion måste lösa ett verkligt problem i skogen eller på pass.
+                    </p>
+                    <ul className="space-y-2 text-xs text-white/60">
+                      <li>• Fältläsbarhet först</li>
+                      <li>• Offline-funktionalitet</li>
+                      <li>• Minimal kognitiv belastning</li>
+                    </ul>
+                  </Card>
+                  <Card title="Nordic Focus" hover>
+                    <p className="text-sm text-white/80 mb-3">
+                      Byggt för nordiska förhållanden - från svenska skogar till finska ödemarker. Lokala språk och regler.
+                    </p>
+                    <ul className="space-y-2 text-xs text-white/60">
+                      <li>• Flerspråkig plattform</li>
+                      <li>• Lokala jaktregler</li>
+                      <li>• Väderintegrering</li>
+                    </ul>
+                  </Card>
+                  <Card title="Privacy First" hover>
+                    <p className="text-sm text-white/80 mb-3">
+                      Jägare delar känslig information. Vi bygger förtroende genom transparens och starka säkerhetsprinciper.
+                    </p>
+                    <ul className="space-y-2 text-xs text-white/60">
+                      <li>• Zero-trust arkitektur</li>
+                      <li>• GDPR compliance</li>
+                      <li>• Transparent datahantering</li>
+                    </ul>
+                  </Card>
+                </div>
+              </motion.div>
+            </section>
+          </>
+        )}
+
       </main>
 
       {/* Enhanced Footer */}
