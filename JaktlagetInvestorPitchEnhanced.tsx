@@ -144,7 +144,7 @@ const fmt = new Intl.NumberFormat("sv-SE");
 
 export default function JaktlagetInvestorPitchEnhanced() {
   // --- UI state for tabs ---
-  const [activeTab, setActiveTab] = useState<"investerare" | "annonsorer" | "utvecklare">("investerare");
+  const [activeTab, setActiveTab] = useState<"hem" | "investerare" | "annonsorer" | "utvecklare">("hem");
 
   // --- UI state for calculator ---
   const [region, setRegion] = useState<"NORDEN" | "SE" | "NO" | "DK" | "FI">("NORDEN");
@@ -249,6 +249,7 @@ export default function JaktlagetInvestorPitchEnhanced() {
         <div className="flex justify-center">
           <div className="inline-flex rounded-2xl border border-white/10 bg-white/5 p-2 backdrop-blur-xl shadow-lg shadow-black/20">
             {[
+              { id: "hem", label: "Hem", icon: "🏠" },
               { id: "investerare", label: "Investerare", icon: "📊" },
               { id: "annonsorer", label: "Annonsörer", icon: "📢" },
               { id: "utvecklare", label: "Utvecklare", icon: "💻" }
@@ -273,6 +274,123 @@ export default function JaktlagetInvestorPitchEnhanced() {
       </nav>
 
       <main className="relative z-10">
+        {/* Hem Tab Content */}
+        {activeTab === "hem" && (
+          <>
+            {/* Hero Section */}
+            <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
+              <div className="grid items-center gap-12 md:grid-cols-2">
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
+                    <span className="bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
+                      Infrastruktur för jaktlag.
+                    </span>
+                    <span className="block text-white/70 text-3xl md:text-4xl font-medium mt-4">
+                      Säkrare säsonger, mindre friktion, bättre kommunikation.
+                    </span>
+                  </h1>
+                  <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 md:text-xl">
+                    Jaktlaget - hela NORDENS jaktcommunity! Här samlas kalender, pass, bomkoder och kommunikation i ett rollstyrt, GDPR‑medvetet flöde. Designat för förtroende och fältläsbarhet.
+                    Hitta gästjägare, knyt nya kontakter och utbyt värdefull kunskap mellan andra jägare, allt på ett och samma ställe! 
+                  </p>
+                  <div className="mt-8 grid max-w-xl grid-cols-1 gap-4 text-sm text-white/80 md:grid-cols-2">
+                    <Card title="Affärsmodell" hover>
+                      <div className="font-semibold text-emerald-300">Prenumeration per medlem</div>
+                      <div className="text-xs text-white/60 mt-1">Prispunkter för modellering: 19 / 49 kr / mån</div>
+                    </Card>
+                    <Card title="Bas / antagande" hover>
+                      <div className="font-semibold text-emerald-300">Nordiska jaktkort</div>
+                      <div className="text-xs text-white/60 mt-1">Interaktiv kalkyl nedan</div>
+                    </Card>
+                  </div>
+                </motion.div>
+
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="relative"
+                >
+                  <div className="absolute -inset-x-8 -bottom-8 top-16 -z-10 rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl ring-1 ring-white/20 shadow-[0_20px_80px_rgba(0,0,0,0.4)]" />
+                  <IPhoneFrame />
+                  <p className="mt-4 text-center text-xs text-white/60 font-medium">Innehållet är i utvecklingsfas (kan ändas).</p>
+                </motion.div>
+              </div>
+            </section>
+
+            {/* Problem/Solution Section */}
+            <section className="mx-auto mt-16 max-w-7xl px-6">
+              <div className="grid gap-8 md:grid-cols-2">
+                <Card title="Problemet idag" hover>
+                  <ul className="space-y-3 text-sm text-white/80">
+                    <li className="flex items-start gap-3">
+                      <span className="text-red-400 mt-1">•</span>
+                      <span>Fragmenterad info: chattgrupper, utspridda dokument, analoga listor.</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-red-400 mt-1">•</span>
+                      <span>Risker kring felaktiga bomkoder, passfördelning och samlingstider.</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-red-400 mt-1">•</span>
+                      <span>Brist på rollstyrning och spårbarhet vid ändringar.</span>
+                    </li>
+                  </ul>
+                </Card>
+                <Card title="Vår lösning" hover>
+                  <ul className="space-y-3 text-sm text-white/80">
+                    <li className="flex items-start gap-3">
+                      <span className="text-emerald-400 mt-1">•</span>
+                      <span>Samlad plattform: kalender, pass, bomkoder, anslag/chatt.</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-emerald-400 mt-1">•</span>
+                      <span>Roll/behörigheter, notifieringar och tydlig logg av ändringar.</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-emerald-400 mt-1">•</span>
+                      <span>Modern, sober design för förtroende och snabb fältanvändning.</span>
+                    </li>
+                  </ul>
+                </Card>
+              </div>
+            </section>
+
+            {/* CTA Section */}
+            <section className="mx-auto mt-16 mb-16 max-w-7xl px-6">
+              <motion.div
+                className="rounded-3xl border border-white/10 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 p-12 backdrop-blur-xl text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent md:text-4xl">
+                  Utforska våra möjligheter
+                </h2>
+                <p className="mt-4 text-lg text-white/70 max-w-2xl mx-auto">
+                  Välj en flik ovan för att se detaljerad information för investerare, annonsörer eller utvecklare.
+                </p>
+                <div className="mt-8 flex flex-wrap justify-center gap-4">
+                  <Button onClick={() => setActiveTab("investerare")} className="px-6 py-3">
+                    📊 Investerare
+                  </Button>
+                  <Button onClick={() => setActiveTab("annonsorer")} className="px-6 py-3">
+                    📢 Annonsörer
+                  </Button>
+                  <Button onClick={() => setActiveTab("utvecklare")} className="px-6 py-3">
+                    💻 Utvecklare
+                  </Button>
+                </div>
+              </motion.div>
+            </section>
+          </>
+        )}
+
         {/* Investerare Tab Content */}
         {activeTab === "investerare" && (
           <>
