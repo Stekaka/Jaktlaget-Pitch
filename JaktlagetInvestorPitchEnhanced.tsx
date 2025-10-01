@@ -152,8 +152,7 @@ export default function JaktlagetInvestorPitchEnhanced() {
   const [price, setPrice] = useState<19 | 49>(19);
   const [useCustomScenario, setUseCustomScenario] = useState(false);
   const [customPrice, setCustomPrice] = useState(29);
-  const [scenarioMonth, setScenarioMonth] = useState(new Date().getMonth() + 1);
-  const [scenarioYear, setScenarioYear] = useState(new Date().getFullYear());
+  const [priceInterval, setPriceInterval] = useState<"month" | "year">("month");
 
   // Bonus / ads
   const [mauPct, setMauPct] = useState(60);
@@ -168,8 +167,21 @@ export default function JaktlagetInvestorPitchEnhanced() {
 
   const activePrice = useMemo(() => useCustomScenario ? customPrice : price, [useCustomScenario, customPrice, price]);
   const subscribers = useMemo(() => Math.round(baseCount * (adoption / 100)), [baseCount, adoption]);
-  const annualRevenueSEK = useMemo(() => subscribers * activePrice * 12, [subscribers, activePrice]);
-  const monthlyRevenueSEK = useMemo(() => subscribers * activePrice, [subscribers, activePrice]);
+  
+  // Calculate monthly and annual revenue based on price interval
+  const monthlyRevenueSEK = useMemo(() => {
+    if (useCustomScenario && priceInterval === "year") {
+      return subscribers * activePrice / 12; // Yearly price divided by 12
+    }
+    return subscribers * activePrice; // Monthly price
+  }, [subscribers, activePrice, useCustomScenario, priceInterval]);
+  
+  const annualRevenueSEK = useMemo(() => {
+    if (useCustomScenario && priceInterval === "year") {
+      return subscribers * activePrice; // Yearly price
+    }
+    return subscribers * activePrice * 12; // Monthly price * 12
+  }, [subscribers, activePrice, useCustomScenario, priceInterval]);
 
   // Ads math
   const mauUsers = useMemo(() => Math.round(subscribers * (mauPct / 100)), [subscribers, mauPct]);
@@ -434,7 +446,26 @@ export default function JaktlagetInvestorPitchEnhanced() {
                     {useCustomScenario ? (
                       <div className="space-y-3">
                         <div className="space-y-2">
-                          <label className="text-xs text-white/70">Pris per månad (kr)</label>
+                          <label className="text-xs text-white/70">Abonnemangstyp</label>
+                          <div className="grid grid-cols-2 gap-3">
+                            <Button
+                              onClick={() => setPriceInterval("month")}
+                              active={priceInterval === "month"}
+                            >
+                              Per månad
+                            </Button>
+                            <Button
+                              onClick={() => setPriceInterval("year")}
+                              active={priceInterval === "year"}
+                            >
+                              Per år
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-xs text-white/70">
+                            Pris {priceInterval === "month" ? "per månad" : "per år"} (kr)
+                          </label>
                           <input 
                             type="number" 
                             value={customPrice}
@@ -442,32 +473,6 @@ export default function JaktlagetInvestorPitchEnhanced() {
                             className="w-full px-3 py-2 bg-black/40 border border-white/20 rounded-lg text-emerald-300 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
                             min="1"
                           />
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="space-y-2">
-                            <label className="text-xs text-white/70">Månad</label>
-                            <select
-                              value={scenarioMonth}
-                              onChange={(e) => setScenarioMonth(parseInt(e.target.value))}
-                              className="w-full px-3 py-2 bg-black/40 border border-white/20 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
-                            >
-                              {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
-                                <option key={m} value={m}>
-                                  {new Date(2024, m - 1).toLocaleDateString('sv-SE', { month: 'long' })}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-xs text-white/70">År</label>
-                            <input 
-                              type="number" 
-                              value={scenarioYear}
-                              onChange={(e) => setScenarioYear(Math.max(2024, parseInt(e.target.value) || 2024))}
-                              className="w-full px-3 py-2 bg-black/40 border border-white/20 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
-                              min="2024"
-                            />
-                          </div>
                         </div>
                       </div>
                     ) : (
@@ -491,7 +496,7 @@ export default function JaktlagetInvestorPitchEnhanced() {
                 {useCustomScenario && (
                   <div className="mb-4 p-3 bg-emerald-400/10 rounded-lg border border-emerald-400/30">
                     <div className="text-xs text-emerald-300 font-medium">
-                      Scenario: {new Date(scenarioYear, scenarioMonth - 1).toLocaleDateString('sv-SE', { month: 'long', year: 'numeric' })} @ {customPrice} kr/mån
+                      Scenario: {customPrice} kr/{priceInterval === "month" ? "månad" : "år"} ({priceInterval === "month" ? "Månadsabonnemang" : "Årsabonnemang"})
                     </div>
                   </div>
                 )}
