@@ -249,10 +249,10 @@ export default function JaktlagetInvestorPitchEnhanced() {
         <div className="flex justify-center">
           <div className="inline-flex rounded-2xl border border-white/10 bg-white/5 p-2 backdrop-blur-xl shadow-lg shadow-black/20">
             {[
-              { id: "hem", label: "Hem", icon: "🏠" },
-              { id: "investerare", label: "Investerare", icon: "📊" },
-              { id: "annonsorer", label: "Annonsörer", icon: "📢" },
-              { id: "utvecklare", label: "Utvecklare", icon: "💻" }
+              { id: "hem", label: "Hem" },
+              { id: "investerare", label: "Investerare" },
+              { id: "annonsorer", label: "Annonsörer" },
+              { id: "utvecklare", label: "Utvecklare" }
             ].map((tab) => (
               <motion.button
                 key={tab.id}
@@ -265,7 +265,6 @@ export default function JaktlagetInvestorPitchEnhanced() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <span className="mr-2">{tab.icon}</span>
                 {tab.label}
               </motion.button>
             ))}
@@ -297,16 +296,6 @@ export default function JaktlagetInvestorPitchEnhanced() {
                     Jaktlaget - hela NORDENS jaktcommunity! Här samlas kalender, pass, bomkoder och kommunikation i ett rollstyrt, GDPR‑medvetet flöde. Designat för förtroende och fältläsbarhet.
                     Hitta gästjägare, knyt nya kontakter och utbyt värdefull kunskap mellan andra jägare, allt på ett och samma ställe! 
                   </p>
-                  <div className="mt-8 grid max-w-xl grid-cols-1 gap-4 text-sm text-white/80 md:grid-cols-2">
-                    <Card title="Affärsmodell" hover>
-                      <div className="font-semibold text-emerald-300">Prenumeration per medlem</div>
-                      <div className="text-xs text-white/60 mt-1">Prispunkter för modellering: 19 / 49 kr / mån</div>
-                    </Card>
-                    <Card title="Bas / antagande" hover>
-                      <div className="font-semibold text-emerald-300">Nordiska jaktkort</div>
-                      <div className="text-xs text-white/60 mt-1">Interaktiv kalkyl nedan</div>
-                    </Card>
-                  </div>
                 </motion.div>
 
                 <motion.div 
@@ -377,13 +366,13 @@ export default function JaktlagetInvestorPitchEnhanced() {
                 </p>
                 <div className="mt-8 flex flex-wrap justify-center gap-4">
                   <Button onClick={() => setActiveTab("investerare")} className="px-6 py-3">
-                    📊 Investerare
+                    Investerare
                   </Button>
                   <Button onClick={() => setActiveTab("annonsorer")} className="px-6 py-3">
-                    📢 Annonsörer
+                    Annonsörer
                   </Button>
                   <Button onClick={() => setActiveTab("utvecklare")} className="px-6 py-3">
-                    💻 Utvecklare
+                    Utvecklare
                   </Button>
                 </div>
               </motion.div>
