@@ -455,6 +455,16 @@
                                 >
                                     Annonsörer
                                 </button>
+                                <button
+                                    onClick={() => setActiveTab("developer")}
+                                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                                        activeTab === "developer"
+                                            ? "bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 shadow-lg shadow-emerald-500/25"
+                                            : "text-white/70 hover:text-white hover:bg-white/10"
+                                    }`}
+                                >
+                                    Utvecklare
+                                </button>
                             </div>
                         </div>
                     </header>
@@ -829,7 +839,7 @@
                                     </div>
                                 </footer>
                             </>
-                        ) : (
+                        ) : activeTab === "advertiser" ? (
                             <>
                                 {/* Advertiser Tab Content */}
                                 <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
@@ -855,6 +865,237 @@
                                     <div className="border-t border-white/10 pt-8 text-center">
                                         <p className="text-sm text-white/60 font-medium">
                                             © {new Date().getFullYear()} Jaktlaget. Annonsplattform för jaktrelaterade företag.
+                                        </p>
+                                    </div>
+                                </footer>
+                            </>
+                        ) : (
+                            <>
+                                {/* Developer Tab Content */}
+                                <section className="relative mx-auto max-w-7xl px-6 pt-12 md:pt-16">
+                                    <div className="grid items-center gap-12 md:grid-cols-2">
+                                        <div>
+                                            <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
+                                                <span className="bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
+                                                    Teknisk Arkitektur
+                                                </span>
+                                            </h1>
+                                            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 md:text-xl">
+                                                Jaktlaget är byggt med modern teknik för skalbarhet, säkerhet och användarupplevelse. En robust plattform för jägare i hela Norden.
+                                            </p>
+                                        </div>
+                                        <div className="relative">
+                                            <div className="absolute -inset-x-8 -bottom-8 top-16 -z-10 rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl ring-1 ring-white/20 shadow-[0_20px_80px_rgba(0,0,0,0.4)]" />
+                                            <div className="relative mx-auto aspect-[9/19] w-full max-w-[320px] rounded-[2.8rem] bg-gradient-to-br from-white/10 to-white/5 ring-1 ring-white/20 shadow-2xl shadow-black/30 backdrop-blur-xl overflow-hidden">
+                                                <div className="absolute inset-0 rounded-[2.8rem] border border-white/15" />
+                                                <div className="absolute left-1/2 top-0 h-7 w-40 -translate-x-1/2 rounded-b-2xl bg-black/70 backdrop-blur-sm" />
+                                                <div className="absolute inset-[12px] rounded-[2.2rem] bg-gradient-to-br from-black/80 to-black/60 ring-1 ring-white/15 overflow-hidden">
+                                                    <ImageCarousel />
+                                                </div>
+                                            </div>
+                                            <p className="mt-4 text-center text-xs text-white/60 font-medium">App-demo: Funktionell prototyp i utvecklingsfas</p>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section className="mx-auto mt-16 max-w-7xl px-6">
+                                    <div className="grid gap-8 md:grid-cols-2">
+                                        <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/10">
+                                            <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Tech Stack</div>
+                                            <div className="mt-3 space-y-4">
+                                                <div>
+                                                    <div className="font-semibold text-emerald-300 mb-2">Frontend</div>
+                                                    <ul className="space-y-2 text-sm text-white/80">
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            React Native (iOS/Android)
+                                                        </li>
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            TypeScript för typsäkerhet
+                                                        </li>
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            Framer Motion för animationer
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <div className="font-semibold text-emerald-300 mb-2">Backend</div>
+                                                    <ul className="space-y-2 text-sm text-white/80">
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            Node.js med Express
+                                                        </li>
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            PostgreSQL för data
+                                                        </li>
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            Redis för caching
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/10">
+                                            <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Arkitektur</div>
+                                            <div className="mt-3 space-y-4">
+                                                <div>
+                                                    <div className="font-semibold text-emerald-300 mb-2">Mikrotjänster</div>
+                                                    <ul className="space-y-2 text-sm text-white/80">
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            User Management Service
+                                                        </li>
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            Calendar & Events Service
+                                                        </li>
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            Notification Service
+                                                        </li>
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            Analytics Service
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <div className="font-semibold text-emerald-300 mb-2">DevOps</div>
+                                                    <ul className="space-y-2 text-sm text-white/80">
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            Docker containerisering
+                                                        </li>
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            AWS/Google Cloud deployment
+                                                        </li>
+                                                        <li className="flex items-center gap-2">
+                                                            <span className="text-emerald-400">•</span>
+                                                            CI/CD med GitHub Actions
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section className="mx-auto mt-16 max-w-7xl px-6">
+                                    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20">
+                                        <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
+                                            Säkerhet & Privacy (GDPR)
+                                        </h3>
+                                        <div className="grid gap-6 md:grid-cols-2">
+                                            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/10">
+                                                <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Dataskydd</div>
+                                                <div className="mt-3">
+                                                    <ul className="space-y-3 text-sm text-white/80">
+                                                        <li className="flex items-start gap-3">
+                                                            <span className="text-emerald-400 mt-1">•</span>
+                                                            <span>End-to-end kryptering för meddelanden</span>
+                                                        </li>
+                                                        <li className="flex items-start gap-3">
+                                                            <span className="text-emerald-400 mt-1">•</span>
+                                                            <span>Rollbaserad åtkomstkontroll (RBAC)</span>
+                                                        </li>
+                                                        <li className="flex items-start gap-3">
+                                                            <span className="text-emerald-400 mt-1">•</span>
+                                                            <span>Minimal datalagring enligt GDPR</span>
+                                                        </li>
+                                                        <li className="flex items-start gap-3">
+                                                            <span className="text-emerald-400 mt-1">•</span>
+                                                            <span>Audit logs för alla ändringar</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/10">
+                                                <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Skalbarhet</div>
+                                                <div className="mt-3">
+                                                    <ul className="space-y-3 text-sm text-white/80">
+                                                        <li className="flex items-start gap-3">
+                                                            <span className="text-emerald-400 mt-1">•</span>
+                                                            <span>Horisontell skalning med Kubernetes</span>
+                                                        </li>
+                                                        <li className="flex items-start gap-3">
+                                                            <span className="text-emerald-400 mt-1">•</span>
+                                                            <span>Real-tidsync med WebSocket</span>
+                                                        </li>
+                                                        <li className="flex items-start gap-3">
+                                                            <span className="text-emerald-400 mt-1">•</span>
+                                                            <span>Offline-stöd för kritiska funktioner</span>
+                                                        </li>
+                                                        <li className="flex items-start gap-3">
+                                                            <span className="text-emerald-400 mt-1">•</span>
+                                                            <span>CDN för global prestanda</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section className="mx-auto mt-16 max-w-7xl px-6">
+                                    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20">
+                                        <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
+                                            Utvecklingsfilosofi
+                                        </h3>
+                                        <div className="grid gap-6 md:grid-cols-3">
+                                            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/10">
+                                                <div className="text-xs uppercase tracking-wider text-white/60 font-medium">User-Centric</div>
+                                                <div className="mt-3">
+                                                    <p className="text-sm text-white/80 mb-3">
+                                                        Design för jägare, inte för tekniker. Varje funktion måste lösa ett verkligt problem i skogen eller på pass.
+                                                    </p>
+                                                    <ul className="space-y-2 text-xs text-white/60">
+                                                        <li>• Fältläsbarhet först</li>
+                                                        <li>• Offline-funktionalitet</li>
+                                                        <li>• Minimal kognitiv belastning</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/10">
+                                                <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Nordic Focus</div>
+                                                <div className="mt-3">
+                                                    <p className="text-sm text-white/80 mb-3">
+                                                        Byggt för nordiska förhållanden - från svenska skogar till finska ödemarker. Lokala språk och regler.
+                                                    </p>
+                                                    <ul className="space-y-2 text-xs text-white/60">
+                                                        <li>• Flerspråkig plattform</li>
+                                                        <li>• Lokala jaktregler</li>
+                                                        <li>• Väderintegrering</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/10">
+                                                <div className="text-xs uppercase tracking-wider text-white/60 font-medium">Privacy First</div>
+                                                <div className="mt-3">
+                                                    <p className="text-sm text-white/80 mb-3">
+                                                        Jägare delar känslig information. Vi bygger förtroende genom transparens och starka säkerhetsprinciper.
+                                                    </p>
+                                                    <ul className="space-y-2 text-xs text-white/60">
+                                                        <li>• Zero-trust arkitektur</li>
+                                                        <li>• GDPR compliance</li>
+                                                        <li>• Transparent datahantering</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                {/* Footer */}
+                                <footer className="mx-auto max-w-7xl px-6 pb-16 mt-16">
+                                    <div className="border-t border-white/10 pt-8 text-center">
+                                        <p className="text-sm text-white/60 font-medium">
+                                            © {new Date().getFullYear()} Jaktlaget. Teknisk dokumentation för utvecklare.
                                         </p>
                                     </div>
                                 </footer>
