@@ -153,6 +153,51 @@ export default function JaktlagetInvestorPitchEnhanced() {
   const [useCustomScenario, setUseCustomScenario] = useState(false);
   const [customPrice, setCustomPrice] = useState(29);
   const [priceInterval, setPriceInterval] = useState<"month" | "year">("month");
+  
+  // Password protection states
+  const [authenticatedTabs, setAuthenticatedTabs] = useState<Set<string>>(new Set());
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [targetTab, setTargetTab] = useState("");
+
+  // Password validation function
+  const validatePassword = (tab: string, password: string): boolean => {
+    const passwords = {
+      "investerare": "Invest123",
+      "annonsör": "Annons987", 
+      "utvecklare": "Utvecklare1928"
+    };
+    return passwords[tab as keyof typeof passwords] === password;
+  };
+
+  // Handle tab click with password protection
+  const handleTabClick = (tab: string) => {
+    if (tab === "hem") {
+      setActiveTab(tab);
+      return;
+    }
+    
+    if (authenticatedTabs.has(tab)) {
+      setActiveTab(tab);
+    } else {
+      setTargetTab(tab);
+      setShowPasswordModal(true);
+      setPasswordInput("");
+    }
+  };
+
+  // Handle password submission
+  const handlePasswordSubmit = () => {
+    if (validatePassword(targetTab, passwordInput)) {
+      setAuthenticatedTabs(prev => new Set([...prev, targetTab]));
+      setActiveTab(targetTab);
+      setShowPasswordModal(false);
+      setPasswordInput("");
+    } else {
+      alert("Fel lösenord. Försök igen.");
+      setPasswordInput("");
+    }
+  };
 
   // Bonus / ads
   const [mauPct, setMauPct] = useState(60);
@@ -244,6 +289,57 @@ export default function JaktlagetInvestorPitchEnhanced() {
         </div>
       </header>
 
+      {/* Password Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="relative w-full max-w-md mx-4 rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6 backdrop-blur-xl shadow-2xl shadow-black/20"
+          >
+            <div className="text-center">
+              <h3 className="text-xl font-bold text-white mb-2">
+                Åtkomst till {targetTab === "investerare" ? "Investerare" : targetTab === "annonsorer" ? "Annonsörer" : "Utvecklare"}
+              </h3>
+              <p className="text-sm text-white/70 mb-6">
+                Ange lösenord för att komma åt denna sektion
+              </p>
+              
+              <div className="space-y-4">
+                <input
+                  type="password"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handlePasswordSubmit()}
+                  placeholder="Ange lösenord..."
+                  className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/5 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400/50"
+                  autoFocus
+                />
+                
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      setShowPasswordModal(false);
+                      setPasswordInput("");
+                    }}
+                    className="flex-1 px-4 py-2 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-colors"
+                  >
+                    Avbryt
+                  </button>
+                  <button
+                    onClick={handlePasswordSubmit}
+                    className="flex-1 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 font-medium hover:from-emerald-500 hover:to-emerald-600 transition-all"
+                  >
+                    Bekräfta
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       {/* Enhanced Tab Navigation */}
       <nav className="relative z-10 mx-auto max-w-7xl px-6 py-8">
         <div className="flex justify-center">
@@ -256,7 +352,7 @@ export default function JaktlagetInvestorPitchEnhanced() {
             ].map((tab) => (
               <motion.button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => handleTabClick(tab.id as any)}
                 className={`relative rounded-xl px-6 py-3 text-sm font-medium transition-all duration-200 ${
                   activeTab === tab.id
                     ? "bg-gradient-to-r from-emerald-400 to-emerald-500 text-emerald-950 shadow-lg shadow-emerald-500/25"
@@ -365,13 +461,13 @@ export default function JaktlagetInvestorPitchEnhanced() {
                   Välj en flik ovan för att se detaljerad information för investerare, annonsörer eller utvecklare.
                 </p>
                 <div className="mt-8 flex flex-wrap justify-center gap-4">
-                  <Button onClick={() => setActiveTab("investerare")} className="px-6 py-3">
+                  <Button onClick={() => handleTabClick("investerare")} className="px-6 py-3">
                     Investerare
                   </Button>
-                  <Button onClick={() => setActiveTab("annonsorer")} className="px-6 py-3">
+                  <Button onClick={() => handleTabClick("annonsorer")} className="px-6 py-3">
                     Annonsörer
                   </Button>
-                  <Button onClick={() => setActiveTab("utvecklare")} className="px-6 py-3">
+                  <Button onClick={() => handleTabClick("utvecklare")} className="px-6 py-3">
                     Utvecklare
                   </Button>
                 </div>
@@ -961,7 +1057,7 @@ export default function JaktlagetInvestorPitchEnhanced() {
                     <p className="text-sm text-white/80 mb-4">
                       Se hur annonser integreras naturligt i användarupplevelsen.
                     </p>
-                    <Button onClick={() => setActiveTab("investerare")} className="w-full">
+                    <Button onClick={() => handleTabClick("investerare")} className="w-full">
                       Se app-demo
                     </Button>
                   </Card>
