@@ -987,8 +987,26 @@ export default function JaktlagetInvestorPitchEnhanced() {
                     </span>
                   </h1>
                   <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 md:text-xl">
-                    Jaktlaget är byggt med modern teknik för skalbarhet, säkerhet och användarupplevelse. En robust plattform för jägare i hela Norden.
+                    Modern, skalbar och type-safe stack med React Native, tRPC och Supabase. 
+                    Serverless-ready arkitektur för snabb deployment och real-time funktionalitet.
                   </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <span className="inline-flex items-center rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
+                      React Native
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
+                      TypeScript
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
+                      Expo SDK 53
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
+                      tRPC
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
+                      Supabase
+                    </span>
+                  </div>
                 </motion.div>
 
                 <motion.div
@@ -999,89 +1017,98 @@ export default function JaktlagetInvestorPitchEnhanced() {
                 >
                   <div className="absolute -inset-x-8 -bottom-8 top-16 -z-10 rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl ring-1 ring-white/20 shadow-[0_20px_80px_rgba(0,0,0,0.4)]" />
                   <IPhoneFrame />
-                  <p className="mt-4 text-center text-xs text-white/60 font-medium">App-demo: Funktionell prototyp i utvecklingsfas</p>
+                  <p className="mt-4 text-center text-xs text-white/60 font-medium">React Native app med cross-platform stöd</p>
                 </motion.div>
               </div>
             </section>
 
+            {/* Tech Stack Overview */}
             <section className="mx-auto mt-16 max-w-7xl px-6">
               <div className="grid gap-8 md:grid-cols-2">
-                <Card title="Tech Stack" hover>
+                <Card title="Frontend - React Native" hover>
                   <div className="space-y-4">
                     <div>
-                      <div className="font-semibold text-emerald-300 mb-2">Frontend</div>
+                      <div className="font-semibold text-emerald-300 mb-2">Core Framework</div>
                       <ul className="space-y-2 text-sm text-white/80">
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          React Native (iOS/Android)
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>React Native 0.79.1 med Expo SDK 53</span>
                         </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          TypeScript för typsäkerhet
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>Expo Router - filbaserad routing (Next.js-liknande)</span>
                         </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          Framer Motion för animationer
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>TypeScript med strikt typning</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>React Native Web för webbkompatibilitet</span>
                         </li>
                       </ul>
                     </div>
                     <div>
-                      <div className="font-semibold text-emerald-300 mb-2">Backend</div>
+                      <div className="font-semibold text-emerald-300 mb-2">State & Data</div>
                       <ul className="space-y-2 text-sm text-white/80">
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          Node.js med Express
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>React Query för server state</span>
                         </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          PostgreSQL för data
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>Custom context hooks (@nkzw/create-context-hook)</span>
                         </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          Redis för caching
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>AsyncStorage för persistent data</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>Lucide React Native för ikoner</span>
                         </li>
                       </ul>
                     </div>
                   </div>
                 </Card>
 
-                <Card title="Arkitektur" hover>
+                <Card title="Backend - Serverless Stack" hover>
                   <div className="space-y-4">
                     <div>
-                      <div className="font-semibold text-emerald-300 mb-2">Mikrotjänster</div>
+                      <div className="font-semibold text-emerald-300 mb-2">API Layer</div>
                       <ul className="space-y-2 text-sm text-white/80">
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          User Management Service
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>Hono.js - snabb, lätt HTTP framework</span>
                         </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          Calendar & Events Service
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>tRPC för end-to-end type safety</span>
                         </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          Notification Service
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          Analytics Service
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>Serverless-ready arkitektur</span>
                         </li>
                       </ul>
                     </div>
                     <div>
-                      <div className="font-semibold text-emerald-300 mb-2">DevOps</div>
+                      <div className="font-semibold text-emerald-300 mb-2">Databas & Auth</div>
                       <ul className="space-y-2 text-sm text-white/80">
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          Docker containerisering
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>Supabase (PostgreSQL med real-time)</span>
                         </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          AWS/Google Cloud deployment
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>Supabase Auth med Apple Sign-In</span>
                         </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-emerald-400">•</span>
-                          CI/CD med GitHub Actions
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>JWT tokens & rollbaserad åtkomst</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 mt-1">•</span>
+                          <span>Real-time synkronisering</span>
                         </li>
                       </ul>
                     </div>
@@ -1090,6 +1117,7 @@ export default function JaktlagetInvestorPitchEnhanced() {
               </div>
             </section>
 
+            {/* App Structure */}
             <section className="mx-auto mt-16 max-w-7xl px-6">
               <motion.div
                 className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20"
@@ -1099,46 +1127,128 @@ export default function JaktlagetInvestorPitchEnhanced() {
                 viewport={{ once: true }}
               >
                 <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
-                  Säkerhet & Privacy (GDPR)
+                  App-struktur & Navigation
                 </h3>
                 <div className="grid gap-6 md:grid-cols-2">
-                  <Card title="Dataskydd" hover>
+                  <Card title="Tab-baserad Navigation" hover>
                     <ul className="space-y-3 text-sm text-white/80">
                       <li className="flex items-start gap-3">
-                        <span className="text-emerald-400 mt-1">•</span>
-                        <span>End-to-end kryptering för meddelanden</span>
+                        <span className="text-emerald-400 mt-1 font-mono text-xs">📋</span>
+                        <span><strong>Hem</strong> - Anslagstavla med inlägg och meddelanden</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="text-emerald-400 mt-1">•</span>
-                        <span>Rollbaserad åtkomstkontroll (RBAC)</span>
+                        <span className="text-emerald-400 mt-1 font-mono text-xs">📅</span>
+                        <span><strong>Kalender</strong> - Jaktplanering och events</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="text-emerald-400 mt-1">•</span>
-                        <span>Minimal datalagring enligt GDPR</span>
+                        <span className="text-emerald-400 mt-1 font-mono text-xs">👥</span>
+                        <span><strong>Community</strong> - Social interaktion mellan jaktlag</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="text-emerald-400 mt-1">•</span>
-                        <span>Audit logs för alla ändringar</span>
+                        <span className="text-emerald-400 mt-1 font-mono text-xs">📄</span>
+                        <span><strong>Information</strong> - Dokument, regler, jaktsäsonger</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1 font-mono text-xs">💬</span>
+                        <span><strong>Chatt</strong> - Team- och privatchatt</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1 font-mono text-xs">👤</span>
+                        <span><strong>Profil</strong> - Användarinställningar</span>
                       </li>
                     </ul>
                   </Card>
-                  <Card title="Skalbarhet" hover>
+                  <Card title="Filstruktur" hover>
+                    <div className="bg-black/40 p-4 rounded-lg font-mono text-xs text-emerald-300 overflow-x-auto">
+                      <div>app/</div>
+                      <div className="ml-4">├── _layout.tsx <span className="text-white/50"># Root layout</span></div>
+                      <div className="ml-4">├── (tabs)/ <span className="text-white/50"># Tab navigation</span></div>
+                      <div className="ml-8">│   ├── _layout.tsx</div>
+                      <div className="ml-8">│   ├── home.tsx</div>
+                      <div className="ml-8">│   ├── calendar.tsx</div>
+                      <div className="ml-8">│   ├── community.tsx</div>
+                      <div className="ml-8">│   ├── info.tsx</div>
+                      <div className="ml-8">│   ├── chat.tsx</div>
+                      <div className="ml-8">│   └── profile.tsx</div>
+                      <div className="ml-4">├── login.tsx</div>
+                      <div className="ml-4">├── register.tsx</div>
+                      <div className="ml-4">└── forgot-password.tsx</div>
+                    </div>
+                  </Card>
+                </div>
+              </motion.div>
+            </section>
+
+            {/* Key Features */}
+            <section className="mx-auto mt-16 max-w-7xl px-6">
+              <motion.div
+                className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
+                  Tekniska Funktioner
+                </h3>
+                <div className="grid gap-6 md:grid-cols-3">
+                  <Card title="State Management" hover>
                     <ul className="space-y-3 text-sm text-white/80">
                       <li className="flex items-start gap-3">
                         <span className="text-emerald-400 mt-1">•</span>
-                        <span>Horisontell skalning med Kubernetes</span>
+                        <span>Hierarkisk Provider-struktur</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-emerald-400 mt-1">•</span>
-                        <span>Real-tidsync med WebSocket</span>
+                        <span>React Query för server state</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-emerald-400 mt-1">•</span>
-                        <span>Offline-stöd för kritiska funktioner</span>
+                        <span>Optimistiska uppdateringar</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-emerald-400 mt-1">•</span>
-                        <span>CDN för global prestanda</span>
+                        <span>Real-time synkronisering</span>
+                      </li>
+                    </ul>
+                  </Card>
+                  <Card title="Dokumenthantering" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Flexibla modultyper</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Drag & drop omorganisering</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Expanderbara sektioner</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Admin-läge för hantering</span>
+                      </li>
+                    </ul>
+                  </Card>
+                  <Card title="Chatt & Kamera" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Swipe-to-delete funktionalitet</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Team- och privatchattar</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Expo Camera integration</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Dokumentscanning & bildoptimering</span>
                       </li>
                     </ul>
                   </Card>
@@ -1146,6 +1256,7 @@ export default function JaktlagetInvestorPitchEnhanced() {
               </motion.div>
             </section>
 
+            {/* Security & Performance */}
             <section className="mx-auto mt-16 max-w-7xl px-6">
               <motion.div
                 className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20"
@@ -1155,39 +1266,294 @@ export default function JaktlagetInvestorPitchEnhanced() {
                 viewport={{ once: true }}
               >
                 <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
-                  Utvecklingsfilosofi
+                  Säkerhet & Prestanda
                 </h3>
                 <div className="grid gap-6 md:grid-cols-3">
-                  <Card title="User-Centric" hover>
-                    <p className="text-sm text-white/80 mb-3">
-                      Design för jägare, inte för tekniker. Varje funktion måste lösa ett verkligt problem i skogen eller på pass.
-                    </p>
-                    <ul className="space-y-2 text-xs text-white/60">
-                      <li>• Fältläsbarhet först</li>
-                      <li>• Offline-funktionalitet</li>
-                      <li>• Minimal kognitiv belastning</li>
+                  <Card title="Autentisering" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Supabase Auth med JWT tokens</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Apple Sign-In integration</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Rollbaserad åtkomstkontroll</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Säker session-hantering</span>
+                      </li>
                     </ul>
                   </Card>
-                  <Card title="Nordic Focus" hover>
-                    <p className="text-sm text-white/80 mb-3">
-                      Byggt för nordiska förhållanden - från svenska skogar till finska ödemarker. Lokala språk och regler.
-                    </p>
-                    <ul className="space-y-2 text-xs text-white/60">
-                      <li>• Flerspråkig plattform</li>
-                      <li>• Lokala jaktregler</li>
-                      <li>• Väderintegrering</li>
+                  <Card title="Error Handling" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Error Boundaries för recovery</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Omfattande logging</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>User-friendly felmeddelanden</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Automatisk retry-logik</span>
+                      </li>
                     </ul>
                   </Card>
-                  <Card title="Privacy First" hover>
-                    <p className="text-sm text-white/80 mb-3">
-                      Jägare delar känslig information. Vi bygger förtroende genom transparens och starka säkerhetsprinciper.
-                    </p>
-                    <ul className="space-y-2 text-xs text-white/60">
-                      <li>• Zero-trust arkitektur</li>
-                      <li>• GDPR compliance</li>
-                      <li>• Transparent datahantering</li>
+                  <Card title="Prestanda" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>React.memo() optimering</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>useMemo() & useCallback()</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Lazy loading av komponenter</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Effektiv bildhantering</span>
+                      </li>
                     </ul>
                   </Card>
+                </div>
+              </motion.div>
+            </section>
+
+            {/* Database Schema */}
+            <section className="mx-auto mt-16 max-w-7xl px-6">
+              <motion.div
+                className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
+                  Databas Schema (Supabase/PostgreSQL)
+                </h3>
+                <div className="grid gap-6 md:grid-cols-2">
+                  <Card title="Huvudtabeller" hover>
+                    <ul className="space-y-2 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 font-mono text-xs mt-1">→</span>
+                        <span><strong>profiles</strong> - Användarprofiler</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 font-mono text-xs mt-1">→</span>
+                        <span><strong>hunting_teams</strong> - Jaktlag</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 font-mono text-xs mt-1">→</span>
+                        <span><strong>team_members</strong> - Lagmedlemskap</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 font-mono text-xs mt-1">→</span>
+                        <span><strong>posts</strong> - Anslagstavla</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 font-mono text-xs mt-1">→</span>
+                        <span><strong>hunts</strong> - Jaktplanering</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 font-mono text-xs mt-1">→</span>
+                        <span><strong>chat_messages</strong> - Chattmeddelanden</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 font-mono text-xs mt-1">→</span>
+                        <span><strong>document_modules</strong> - Dokumentmoduler</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 font-mono text-xs mt-1">→</span>
+                        <span><strong>document_items</strong> - Dokumentinnehåll</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 font-mono text-xs mt-1">→</span>
+                        <span><strong>advertisements</strong> - Reklam</span>
+                      </li>
+                    </ul>
+                  </Card>
+                  <Card title="Relationer" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span><strong>Many-to-many:</strong> Användare ↔ Jaktlag via team_members</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span><strong>One-to-many:</strong> Team → Posts, Hunts, Documents</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span><strong>Hierarkisk:</strong> Document Modules → Document Items</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span><strong>Real-time:</strong> WebSocket subscriptions för live updates</span>
+                      </li>
+                    </ul>
+                  </Card>
+                </div>
+              </motion.div>
+            </section>
+
+            {/* Deployment & Future */}
+            <section className="mx-auto mt-16 max-w-7xl px-6">
+              <motion.div
+                className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
+                  Deployment & Skalbarhet
+                </h3>
+                <div className="grid gap-6 md:grid-cols-3">
+                  <Card title="Development" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>TypeScript-first utveckling</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Hot reload för snabb utveckling</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>ESLint för kodkvalitet</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Expo CLI för deployment</span>
+                      </li>
+                    </ul>
+                  </Card>
+                  <Card title="Production" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Serverless backend med Hono.js</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>CDN-optimerade assets</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Real-time databas med Supabase</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Cross-platform via Expo</span>
+                      </li>
+                    </ul>
+                  </Card>
+                  <Card title="Skalbarhet" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Modulär arkitektur</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>API-first design</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Flexibel datamodell</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Microservice-ready struktur</span>
+                      </li>
+                    </ul>
+                  </Card>
+                </div>
+              </motion.div>
+            </section>
+
+            {/* Future Features */}
+            <section className="mx-auto mt-16 mb-16 max-w-7xl px-6">
+              <motion.div
+                className="rounded-3xl border border-white/10 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 p-8 backdrop-blur-xl shadow-2xl shadow-black/20"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-6">
+                  Framtida Utveckling
+                </h3>
+                <div className="grid gap-6 md:grid-cols-2">
+                  <Card title="Planerade Funktioner" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>GPS-integration för jaktområden</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Väder-API integration</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Push notifications</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Offline-funktionalitet</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>AI-baserad jaktplanering</span>
+                      </li>
+                    </ul>
+                  </Card>
+                  <Card title="Tekniska Förbättringar" hover>
+                    <ul className="space-y-3 text-sm text-white/80">
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>React Native New Architecture (aktiverat)</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Expo Router v6 migration</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Advanced caching strategies</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Performance monitoring</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1">•</span>
+                        <span>Accessibility improvements</span>
+                      </li>
+                    </ul>
+                  </Card>
+                </div>
+                <div className="mt-6 p-4 bg-black/30 rounded-lg border border-emerald-400/20">
+                  <p className="text-sm text-white/70 text-center">
+                    <strong className="text-emerald-300">Jaktlaget</strong> representerar en modern, skalbar och användarvänlig lösning för jaktlagshantering, 
+                    byggd med branschens bästa praxis och senaste teknologier.
+                  </p>
                 </div>
               </motion.div>
             </section>
